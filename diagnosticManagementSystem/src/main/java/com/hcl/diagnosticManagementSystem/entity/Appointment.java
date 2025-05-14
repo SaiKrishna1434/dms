@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "AppointmentTable")
+@Table(name = "AppointmentTable_Data")
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

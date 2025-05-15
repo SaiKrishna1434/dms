@@ -29,9 +29,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         Appointment appointment = mapper.toAppointment(request);
         appointment.setAppointmentId(UUID.randomUUID().toString());
 
-        boolean hasMissingFields = validateMissingFields(request);
-        appointment.setStatus(hasMissingFields ? "In Progress" : "Confirmed");
-        appointment.setRemark(hasMissingFields ? getMissingFieldMessage(request) : null);
+//        boolean hasMissingFields = validateMissingFields(request);
+//        appointment.setStatus(hasMissingFields ? "In Progress" : "Confirmed");
+//        appointment.setRemark(hasMissingFields ? getMissingFieldMessage(request) : null);
 
         appointmentRepository.save(appointment);
         return mapper.toResponse(appointment);

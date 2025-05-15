@@ -10,5 +10,6 @@ public class DiagnosticManagementSystemApplication {
 		SpringApplication.run(DiagnosticManagementSystemApplication.class, args);
 		System.out.println("server started");
 	}
-
 }
+
+

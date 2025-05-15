@@ -1,0 +1,29 @@
+package com.example.dmcmsproject.dto;
+
+public class DeselectRequest {
+
+	private String userId;
+	private String serviceId;
+	
+	public DeselectRequest() {
+		
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getServiceId() {
+		return serviceId;
+	}
+
+	public void setServiceId(String serviceId) {
+		this.serviceId = serviceId;
+	}
+	
+	
+}

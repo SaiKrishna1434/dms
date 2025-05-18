@@ -127,6 +127,13 @@ public class InsuranceAgentController {
 			response.setData(null);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
+		catch(NumberFormatException e)
+		{
+			response.setStatus("Failed");
+			response.setMessage("Invalid userId: Must be a numeric value.");
+			response.setData(null);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		}
 		catch(Exception e)
 		{
 			response.setStatus("Failed");
@@ -160,6 +167,13 @@ public class InsuranceAgentController {
 		{
 			response.setStatus("Failed");
 			response.setMessage("Failed to delete customer services: "+e.getMessage());
+			response.setData(null);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		}
+		catch(NumberFormatException e)
+		{
+			response.setStatus("Failed");
+			response.setMessage("Invalid userId and ServiceId: Must be a numeric value.");
 			response.setData(null);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
@@ -200,6 +214,13 @@ public class InsuranceAgentController {
 			response.setData(null);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
+		catch(NumberFormatException e)
+		{
+			response.setStatus("Failed");
+			response.setMessage("Invalid userId and agentId: Must be a numeric value.");
+			response.setData(null);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		}
 		catch(Exception e)
 		{
 			response.setStatus("Failed");
@@ -227,6 +248,13 @@ public class InsuranceAgentController {
 		{
 			response.setStatus("Failed");
 			response.setMessage("Failed to fetch customer services: "+e.getMessage());
+			response.setData(null);
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+		}
+		catch(NumberFormatException e)
+		{
+			response.setStatus("Failed");
+			response.setMessage("Invalid userId: Must be a numeric value.");
 			response.setData(null);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}

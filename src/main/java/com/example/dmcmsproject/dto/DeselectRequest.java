@@ -1,8 +1,12 @@
 package com.example.dmcmsproject.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class DeselectRequest {
 
+	@NotBlank(message = "User Id cannot be blank")
 	private String userId;
+	@NotBlank(message ="Service Id cannot be blank")
 	private String serviceId;
 	
 	public DeselectRequest() {

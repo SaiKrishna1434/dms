@@ -16,6 +16,10 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class InsuranceAgent {
@@ -23,13 +27,21 @@ public class InsuranceAgent {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank(message="Agent Name cannot be blank")
 	private String name;
+	@NotBlank(message="Agent location cannot be blank")
 	private String location;
+	@Email(message = "Invalid email format")
+	private String email;
+	@NotBlank(message="Agent Contact number cannot be blank")
+	private String contactNo;
 	
 	@ManyToMany
 	@JoinTable(name="agent_services", joinColumns = @JoinColumn(name="agent_id"),
 	inverseJoinColumns = @JoinColumn(name="service_id"))
 	@JsonManagedReference
+	@NotNull(message = "Agent Services cannot be null")
+	@NotEmpty(message = "Insurance agent must have at least one services")
 	private List<Services> services=new ArrayList<Services>();
 	
 	@OneToMany(mappedBy="insuranceAgent")
@@ -85,5 +97,21 @@ public class InsuranceAgent {
 
 	public void setAgentRecords(List<CustomerServiceRecord> agentRecords) {
 		this.agentRecords = agentRecords;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getContactNo() {
+		return contactNo;
+	}
+
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
 	}
 }

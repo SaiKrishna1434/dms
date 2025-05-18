@@ -9,6 +9,11 @@ public class ServicesResponse {
 		// TODO Auto-generated constructor stub
 	}
 
+	public ServicesResponse(Long id, String service) {
+		this.id = id;
+		this.service = service;
+	}
+	
 	public Long getId() {
 		return id;
 	}

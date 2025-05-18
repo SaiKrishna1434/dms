@@ -3,14 +3,12 @@ package com.example.dmcmsproject.response;
 import java.util.List;
 import java.util.Map;
 
-import com.example.dmcmsproject.model.Services;
-
 public class CustomerResponse {
 
 	private Long customerId;
 	private String customerName;
 	private String customerLocation;
-	private Map<String,List<String>> servicesList;
+	private Map<InsuranceAgentDetails,List<ServicesResponse>> servicesList;
 	
 	public CustomerResponse() {
 		// TODO Auto-generated constructor stub
@@ -32,11 +30,11 @@ public class CustomerResponse {
 		this.customerName = customerName;
 	}
 
-	public Map<String, List<String>> getServicesList() {
+	public Map<InsuranceAgentDetails, List<ServicesResponse>> getServicesList() {
 		return servicesList;
 	}
 
-	public void setServicesList(Map<String, List<String>> servicesList) {
+	public void setServicesList(Map<InsuranceAgentDetails, List<ServicesResponse>> servicesList) {
 		this.servicesList = servicesList;
 	}
 

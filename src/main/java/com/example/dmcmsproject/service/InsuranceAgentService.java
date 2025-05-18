@@ -27,6 +27,7 @@ import com.example.dmcmsproject.model.CustomerServiceRecord;
 import com.example.dmcmsproject.model.InsuranceAgent;
 import com.example.dmcmsproject.model.Services;
 import com.example.dmcmsproject.response.CustomerResponse;
+import com.example.dmcmsproject.response.InsuranceAgentDetails;
 import com.example.dmcmsproject.response.InsuranceAgentResponse;
 import com.example.dmcmsproject.response.NameResponse;
 import com.example.dmcmsproject.response.ServicesResponse;
@@ -86,7 +87,7 @@ public class InsuranceAgentService {
 	}
 	
 	public CustomerResponse deleteAllServices(String userId) throws NumberFormatException, CustomerNotFoundException, CustomerServiceNotFoundException,Exception {
-		
+	
 		Customer customer=customerRepository.findById(Long.parseLong(userId.trim()))
 				.orElseThrow(() -> new CustomerNotFoundException("Customer Not Found"));
 		
@@ -97,22 +98,32 @@ public class InsuranceAgentService {
 			throw new CustomerServiceNotFoundException("Customer not has services");
 		}
 		
-		Map<String,List<String>> deletedServicesMap=new HashMap<>();
+		Map<InsuranceAgentDetails,List<ServicesResponse>> deletedServicesMap=new HashMap<>();
 		
 		for(CustomerServiceRecord s : records)
 		{
 			InsuranceAgent agent=s.getInsuranceAgent();
+			InsuranceAgentDetails agents=new InsuranceAgentDetails();
+			agents.setAgentId(String.valueOf(s.getInsuranceAgent().getId()));
+			agents.setAgentName(s.getInsuranceAgent().getName());
+			agents.setLocation(s.getInsuranceAgent().getLocation());
+			agents.setEmail(s.getInsuranceAgent().getEmail());
+			agents.setContactInfo(s.getInsuranceAgent().getContactNo());
+			
 			Services service=s.getService();
+			ServicesResponse response=new ServicesResponse();
+			response.setId(service.getId());
+			response.setService(service.getService());
 			
 			String agentName= agent!=null ? agent.getName() : "Unknown Agent";
 			String serviceName= service!=null ? service.getService() : "Unknown Service"; 
 			
-			if(!deletedServicesMap.containsKey(agentName))
+			if(!deletedServicesMap.containsKey(agents))
 			{
-				deletedServicesMap.put(agentName, new ArrayList<>());
+				deletedServicesMap.put(agents, new ArrayList<>());
 			}
 					 
-			deletedServicesMap.get(agentName).add(serviceName);
+			deletedServicesMap.get(agents).add(response);
 		 }
 			
 		customerServiceRepository.deleteAll(records);
@@ -158,19 +169,29 @@ public class InsuranceAgentService {
 		
 		customerRepository.save(customer);
 		
-		Map<String,List<String>> remainingServices=new HashMap<>();
+		Map<InsuranceAgentDetails,List<ServicesResponse>> remainingServices=new HashMap<>();
 		
 		for(CustomerServiceRecord record : customer.getCustomerRecords())
 		{
-			String agentName = record.getInsuranceAgent().getName();
-			String serviceName = record.getService().getService();
+			InsuranceAgent agent=record.getInsuranceAgent();
+			InsuranceAgentDetails insuranceAgent=new InsuranceAgentDetails();
+			insuranceAgent.setAgentId(String.valueOf(agent.getId()));
+			insuranceAgent.setAgentName(agent.getName());
+			insuranceAgent.setLocation(agent.getLocation());
+			insuranceAgent.setEmail(agent.getEmail());
+			insuranceAgent.setContactInfo(agent.getContactNo());
 			
-			if(!remainingServices.containsKey(agentName))
+			Services s=record.getService();
+			ServicesResponse response=new ServicesResponse();
+			response.setId(s.getId());
+			response.setService(s.getService());
+			
+			if(!remainingServices.containsKey(insuranceAgent))
 			{
-				remainingServices.put(agentName, new ArrayList<>());
+				remainingServices.put(insuranceAgent, new ArrayList<>());
 			}
 			
-			remainingServices.get(agentName).add(serviceName);
+			remainingServices.get(insuranceAgent).add(response);
 		}
 		
 		CustomerResponse response = new CustomerResponse();
@@ -187,23 +208,29 @@ public class InsuranceAgentService {
 		Customer optionalCustomer=customerRepository.findById(Long.parseLong(request.getUserId().trim()))
 				.orElseThrow(()-> new CustomerNotFoundException("Customer Not found"));
 
-			Map<String,List<String>> servicesMap=new HashMap<>();
+			Map<InsuranceAgentDetails,List<ServicesResponse>> servicesMap=new HashMap<>();
 		
 			for(CustomerServiceRecord record : optionalCustomer.getCustomerRecords())
 			{
 				InsuranceAgent agent= record.getInsuranceAgent();
-			
+				InsuranceAgentDetails insuranceAgent=new InsuranceAgentDetails();
+				insuranceAgent.setAgentId(String.valueOf(agent.getId()));
+				insuranceAgent.setAgentName(agent.getName());
+				insuranceAgent.setLocation(agent.getLocation());
+				insuranceAgent.setEmail(agent.getEmail());
+				insuranceAgent.setContactInfo(agent.getContactNo());
+				
 				Services service=record.getService();
-			
-				String agentName= agent!=null ? agent.getName() : "Unknown Agent";
-				String servicename= service!=null ? service.getService() :"Unknown Service";
+				ServicesResponse response=new ServicesResponse();
+				response.setId(service.getId());
+				response.setService(service.getService());
  			
-				if(!servicesMap.containsKey(agentName))
+				if(!servicesMap.containsKey(insuranceAgent))
 				{
-					servicesMap.put(agentName, new ArrayList<>());
+					servicesMap.put(insuranceAgent, new ArrayList<>());
 				}
 			
-			servicesMap.get(agentName).add(servicename);
+			servicesMap.get(insuranceAgent).add(response);
 			
 		}
 		
@@ -284,14 +311,26 @@ public class InsuranceAgentService {
     	response.setCustomerId(customer.getUserId());
     	response.setCustomerName(customer.getCname());
     	response.setCustomerLocation(customer.getLocation());
-    	List<String> serviceNames = new ArrayList<String>();
+    	
+    	List<ServicesResponse> serviceNames = new ArrayList<>();
     	for(Services s : matchedServices)
     	{
-    	   serviceNames.add(s.getService());
+    		ServicesResponse services=new ServicesResponse();
+    		services.setId(s.getId());
+    		services.setService(s.getService());
+    		
+    		serviceNames.add(services);
     	}
+    	
+    	InsuranceAgentDetails insuranceAgent=new InsuranceAgentDetails();
+		insuranceAgent.setAgentId(String.valueOf(agent.getId()));
+		insuranceAgent.setAgentName(agent.getName());
+		insuranceAgent.setLocation(agent.getLocation());
+		insuranceAgent.setEmail(agent.getEmail());
+		insuranceAgent.setContactInfo(agent.getContactNo());
     	    
-    	Map<String, List<String>> serviceMap=new HashMap<>();
-    	serviceMap.put(agent.getName(), serviceNames);
+    	Map<InsuranceAgentDetails, List<ServicesResponse>> serviceMap=new HashMap<>();
+    	serviceMap.put(insuranceAgent, serviceNames);
     	    
     	response.setServicesList(serviceMap);
     	    

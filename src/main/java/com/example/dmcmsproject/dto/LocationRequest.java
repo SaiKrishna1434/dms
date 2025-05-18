@@ -1,7 +1,10 @@
 package com.example.dmcmsproject.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class LocationRequest {
 
+	@NotBlank(message ="Location cannot be blank")
 	private String location;
 	
 	public LocationRequest() {

@@ -46,4 +46,6 @@ public class InsuranceAgentResponse {
 	public void setServiceList(List<ServicesResponse> serviceList) {
 		this.serviceList = serviceList;
 	}
+	
+	
 }

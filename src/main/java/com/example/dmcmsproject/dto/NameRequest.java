@@ -1,7 +1,10 @@
 package com.example.dmcmsproject.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class NameRequest {
 
+	@NotBlank(message = "Agent name cannot be blank")
 	private String name;
 	
 	public NameRequest() {

@@ -10,7 +10,7 @@ public class CustomerViewResponseModel<T> {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public String isStatus() {
+	public String getStatus() {
 		return status;
 	}
 

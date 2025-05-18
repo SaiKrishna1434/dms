@@ -1,7 +1,10 @@
 package com.example.dmcmsproject.dto;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class IDRequest {
 
+	@NotBlank(message = "User Id cannot be blank")
 	private String userId;
 	
 	public IDRequest() {
@@ -15,6 +18,5 @@ public class IDRequest {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
-	
+
 }

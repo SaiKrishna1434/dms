@@ -9,7 +9,7 @@ public class NameResponse {
 	private Long agentId;
 	private String agentName;
 	private String location;
-
+	
 	public String getService() {
 		return service;
 	}

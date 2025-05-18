@@ -2,10 +2,18 @@ package com.example.dmcmsproject.dto;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+
+
 public class SelectServiceRequest {
 
+	@NotBlank(message="User Id cannot be blank")
 	private String userId;
+	@NotBlank(message = "Agent Id cannot be blank")
 	private String agentId;
+	
+	@NotEmpty(message = " Customer should have enter one services")
 	private List<String> serviceNames;
 	
 	public SelectServiceRequest() {

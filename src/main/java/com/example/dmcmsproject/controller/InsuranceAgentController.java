@@ -36,7 +36,7 @@ public class InsuranceAgentController {
 	@Autowired
 	private InsuranceAgentService insuranceAgentService;
 	
-	@GetMapping("/api/insuarance/home")
+	@GetMapping("/home")
 	public ResponseEntity<String> home()
 	{
 		return ResponseEntity.ok("Welcome to the Home Page");

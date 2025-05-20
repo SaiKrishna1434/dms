@@ -128,4 +128,3 @@ public class AppointmentServiceImpl implements AppointmentService {
                         new AppointmentNotFoundException("Appointment not found with ID: " + appointmentId));
     }
 }
-

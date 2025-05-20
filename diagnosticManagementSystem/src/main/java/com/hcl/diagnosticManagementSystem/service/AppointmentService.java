@@ -1,5 +1,7 @@
 package com.hcl.diagnosticManagementSystem.service;
 
+import java.util.List;
+
 import com.hcl.diagnosticManagementSystem.dto.AppointmentCheckupRequest;
 import com.hcl.diagnosticManagementSystem.dto.AppointmentCheckupResponse;
 

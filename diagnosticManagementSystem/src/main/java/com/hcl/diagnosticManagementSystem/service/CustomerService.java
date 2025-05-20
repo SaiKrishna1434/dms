@@ -1,9 +1,8 @@
 package com.hcl.diagnosticManagementSystem.service;
 
-import java.util.Collections;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,66 +10,62 @@ import org.springframework.transaction.annotation.Transactional;
 import com.hcl.diagnosticManagementSystem.dao.CustomerRepository;
 import com.hcl.diagnosticManagementSystem.dao.RoleRepository;
 import com.hcl.diagnosticManagementSystem.dto.CustomerRegistrationRequestDTO;
-import com.hcl.diagnosticManagementSystem.dto.CustomerRegistrationResponseDTO;
 import com.hcl.diagnosticManagementSystem.entity.Customer;
 import com.hcl.diagnosticManagementSystem.entity.Role;
-import com.hcl.diagnosticManagementSystem.exception.UserAlreadyExistsException;
-
+import com.hcl.diagnosticManagementSystem.exception.DuplicateResourceException;
 
 
 @Service
-public class CustomerService {
+public class CustomerService {	
 	
-	@Autowired
-	private CustomerRepository customerRepository;
+	private final CustomerRepository customerRepository;
+	private final RoleRepository roleRepository;
+	private final PasswordEncoder passwordEncoder;
 	
-	@Autowired
-	private RoleRepository roleRepository;
+	public CustomerService(CustomerRepository customerRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+		this.customerRepository = customerRepository;
+		this.roleRepository = roleRepository;
+		this.passwordEncoder = passwordEncoder;
+	}
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	
-	// Registering customer
 	@Transactional
-	public CustomerRegistrationResponseDTO registerCustomer(CustomerRegistrationRequestDTO requestDTO) {
-		
-		// Check if the user ID is already exists
-		Optional<Customer> existingCustomer = customerRepository.findByUserId(requestDTO.getUserId());
-		if(existingCustomer.isPresent()) {
-			throw new UserAlreadyExistsException("User ID already exists");
-		}
-		
-		// Create a new customer object
-		Customer customer = new Customer();
-		customer.setUserId(requestDTO.getUserId());
-		customer.setPassword(passwordEncoder.encode(requestDTO.getPassword()));		// With encoded password
-		customer.setDateOfBirth(requestDTO.getDateOfBirth());
-		customer.setEmailId(requestDTO.getEmailId());
-		
-		// Assign default role 
-		Role defaultRole = roleRepository.findByName("ROLE_CUSTOMER").orElseGet(()-> {
-			Role newRole = new Role();
-			newRole.setName("ROLE_CUSTOMER");
-			return roleRepository.save(newRole);
-		});
-		customer.setRoles(Collections.singletonList(defaultRole));
-		
-		//save customer to database
-		Customer savedCustomer = customerRepository.save(customer);
-		
-		
-		// Convert the saved customer to a DTO
-		CustomerRegistrationResponseDTO responseDTO = new CustomerRegistrationResponseDTO();
-		responseDTO.setId(savedCustomer.getId());
-		responseDTO.setUserId(savedCustomer.getUserId());
-		responseDTO.setEmailId(savedCustomer.getEmailId());
-		
-		return responseDTO;
+	public Customer registerCustomer(CustomerRegistrationRequestDTO requestDTO) {
+			
+			Optional<Customer> existingCustomerByUserId = customerRepository.findByUserId(requestDTO.getUserId());
+			if(existingCustomerByUserId.isPresent()) {
+				throw new DuplicateResourceException("User ID already exists");
+			}
+			
+			Optional<Customer> existingCustomerByEmailId = customerRepository.findByEmailId(requestDTO.getEmailId());
+			if(existingCustomerByEmailId.isPresent()) {
+				throw new DuplicateResourceException("Email ID already exists");
+			}
+			
+			Customer customer = new Customer();
+			customer.setUserId(requestDTO.getUserId());
+			customer.setPassword(passwordEncoder.encode(requestDTO.getPassword()));		// With encoded password
+			customer.setDateOfBirth(requestDTO.getDateOfBirth());
+			customer.setEmailId(requestDTO.getEmailId());
+			
+			// Assign default role 
+			Role customerRole = roleRepository.findByName(Role.RoleName.ROLE_CUSTOMER)
+				.orElseGet(()-> {
+					Role newRole = new Role(Role.RoleName.ROLE_CUSTOMER);
+					return roleRepository.save(newRole);
+				});
+			// customer.setRoles(List.of(customerRole));  // -> when customer-role included
+			
+			//save customer to database
+			Customer savedCustomer = customerRepository.save(customer);
+			return savedCustomer;
 	}
 	
-	
-	public Customer getCustomerByUserId(String userId) {
-		return customerRepository.findByUserId(userId).orElse(null);
+	public Optional<Customer> getCustomerByUserId(String userId) {
+		return customerRepository.findByUserId(userId);
 	}
+	
+	public Customer getCurrentCustomer() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return getCustomerByUserId(userId).orElseThrow(() -> new RuntimeException("Customer not found"));
+    }
 }

@@ -33,11 +33,11 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
 	}
 	
-	@ExceptionHandler(HealthCheckupPlanNotFoundException.class)
-	public ResponseEntity<Map<String, String>> handleHealthCheckupPlanNotFound(HealthCheckupPlanNotFoundException ex) {
-		Map<String, String> errorResponse = new HashMap<>();
-		errorResponse.put("message", ex.getMessage());
-		return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
-	}
+	@ExceptionHandler(ApplicationAlreadyExistsException.class)
+    public ResponseEntity<Object> handleApplicationAlreadyExistsException(ApplicationAlreadyExistsException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("message", ex.getMessage());
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
 	
 }

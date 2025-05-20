@@ -22,6 +22,17 @@ public class CustomerRegistrationRequestDTO {
 	@NotBlank(message =  "Email ID is required")
 	@Email(message = "Invalid email format")
 	private String emailId;
+	
+	// Constructors
+	public CustomerRegistrationRequestDTO() {
+	}
+	
+	public CustomerRegistrationRequestDTO(String userId, String password, LocalDate dateOfBirth, String emailId) {
+		this.userId = userId;
+		this.password = password;
+		this.dateOfBirth = dateOfBirth;
+		this.emailId = emailId;
+	}
 
 	// Getters and Setters
 	public String getUserId() {

@@ -11,7 +11,7 @@ import java.time.LocalTime;
 
 public class AppointmentCheckupRequest {
 
-    @NotNull(message = "Patient name is required")
+    @NotBlank(message = "Patient name is required")
     private String patientName;
     @NotNull(message = "Age is required")
     @Min(value = 0, message = "Age can not be negative")

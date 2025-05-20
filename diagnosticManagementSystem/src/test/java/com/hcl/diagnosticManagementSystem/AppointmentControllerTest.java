@@ -1,11 +1,10 @@
 package com.hcl.diagnosticManagementSystem;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.hcl.diagnosticManagementSystem.controller.AppointmentController;
 import com.hcl.diagnosticManagementSystem.dto.AppointmentCheckupRequest;
 import com.hcl.diagnosticManagementSystem.dto.AppointmentCheckupResponse;
 import com.hcl.diagnosticManagementSystem.service.AppointmentService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
@@ -31,7 +30,6 @@ class AppointmentControllerTest {
     @MockBean
     private AppointmentService appointmentService;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private AppointmentCheckupRequest getValidRequest() {
         AppointmentCheckupRequest request = new AppointmentCheckupRequest();
@@ -90,5 +88,3 @@ class AppointmentControllerTest {
 //                .andExpect(jsonPath("$.success").value(true));
 //    }
 }
-
-

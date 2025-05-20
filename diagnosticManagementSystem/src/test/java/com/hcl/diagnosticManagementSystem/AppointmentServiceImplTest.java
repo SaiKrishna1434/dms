@@ -3,16 +3,15 @@ package com.hcl.diagnosticManagementSystem;
 import com.hcl.diagnosticManagementSystem.dto.AppointmentCheckupRequest;
 import com.hcl.diagnosticManagementSystem.dto.AppointmentCheckupResponse;
 import com.hcl.diagnosticManagementSystem.entity.Appointment;
-import com.hcl.diagnosticManagementSystem.mapper.AppointmentMapper;
 import com.hcl.diagnosticManagementSystem.repository.AppointmentRepository;
 import com.hcl.diagnosticManagementSystem.service.AppointmentServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -24,9 +23,6 @@ class AppointmentServiceImplTest {
 
     @Mock
     private AppointmentRepository appointmentRepository;
-
-    @Mock
-    private AppointmentMapper mapper;
 
     @BeforeEach
     void setUp() {
@@ -46,72 +42,98 @@ class AppointmentServiceImplTest {
         return request;
     }
 
+    private Appointment mapToAppointment(AppointmentCheckupRequest request) {
+        Appointment appointment = new Appointment();
+        appointment.setPatientName(request.getPatientName());
+        appointment.setAge(request.getAge());
+        appointment.setGender(request.getGender());
+        appointment.setMobile(request.getMobile());
+        appointment.setEmail(request.getEmail());
+        appointment.setCheckupType(request.getCheckupType());
+        appointment.setAppointmentDate(request.getPreferredDate());
+        appointment.setAppointmentTime(request.getPreferredTime());
+        appointment.setStatus("Confirmed");
+        return appointment;
+    }
+
+    private AppointmentCheckupResponse mapToResponse(Appointment appointment) {
+        AppointmentCheckupResponse response = new AppointmentCheckupResponse();
+        response.setAppointmentId(appointment.getAppointmentId());
+        response.setPatientName(appointment.getPatientName());
+        response.setCheckupType(appointment.getCheckupType());
+        response.setAppointmentDate(appointment.getAppointmentDate());
+        response.setAppointmentTime(appointment.getAppointmentTime());
+        response.setStatus(appointment.getStatus());
+        return response;
+    }
+
     @Test
     void testApplyForCheckup_ValidRequest_ShouldReturnConfirmedStatus() {
         AppointmentCheckupRequest request = getValidRequest();
-        Appointment appointment = new Appointment();
-        AppointmentCheckupResponse response = new AppointmentCheckupResponse();
 
-        when(mapper.toAppointment(request)).thenReturn(appointment);
-        when(appointmentRepository.save(any())).thenReturn(appointment);
-        when(mapper.toResponse(any())).thenReturn(response);
+        // Mock save: assign appointmentId and return saved appointment
+        when(appointmentRepository.save(any())).thenAnswer(invocation -> {
+            Appointment savedAppointment = invocation.getArgument(0);
+            savedAppointment.setAppointmentId("generated-id-123");
+            return savedAppointment;
+        });
 
         AppointmentCheckupResponse result = appointmentService.applyForCheckup(request);
 
         assertNotNull(result);
-        verify(appointmentRepository, times(1)).save(appointment);
-        assertEquals("Confirmed", appointment.getStatus());
+        assertEquals("Confirmed", result.getStatus());
+        assertEquals("generated-id-123", result.getAppointmentId());
+        verify(appointmentRepository, times(1)).save(any(Appointment.class));
     }
 
     @Test
     void testDeleteAppointmentById_ShouldDeleteSuccessfully() {
-        Appointment appointment = new Appointment();
+        Appointment appointment = mapToAppointment(getValidRequest());
         appointment.setAppointmentId("test-id");
 
+        // Simulate find by id returns appointment
         when(appointmentRepository.findByAppointmentId("test-id")).thenReturn(Optional.of(appointment));
-        AppointmentCheckupResponse response = new AppointmentCheckupResponse();
-    when(mapper.toResponse(appointment)).thenReturn(response);
 
-    AppointmentCheckupResponse result = appointmentService.deleteAppointmentById("test-id");
+        // Mock delete method (void)
+        doNothing().when(appointmentRepository).delete(appointment);
 
-    assertNotNull(result);
-    verify(appointmentRepository).delete(appointment);
-}
+        // Assuming deleteAppointmentById sets status to "Cancelled"
+        AppointmentCheckupResponse result = appointmentService.deleteAppointmentById("test-id");
+
+        assertNotNull(result);
+        assertEquals("Cancelled", result.getStatus()); // <-- Expect Cancelled here
+        verify(appointmentRepository).delete(appointment);
+    }
 
     @Test
     void testGetAppointmentDetailsById_ShouldReturnDetails() {
-        Appointment appointment = new Appointment();
+        Appointment appointment = mapToAppointment(getValidRequest());
         appointment.setAppointmentId("test-id");
 
         when(appointmentRepository.findByAppointmentId("test-id")).thenReturn(Optional.of(appointment));
-        AppointmentCheckupResponse response = new AppointmentCheckupResponse();
-        when(mapper.toResponse(appointment)).thenReturn(response);
 
         AppointmentCheckupResponse result = appointmentService.getAppointmentDetailsById("test-id");
 
         assertNotNull(result);
+        assertEquals("test-id", result.getAppointmentId());
     }
 
     @Test
     void testUpdateAppointment_WithValidRequest_ShouldConfirmAppointment() {
         String appointmentId = "test-id";
-        Appointment appointment = new Appointment();
-        AppointmentCheckupRequest request = getValidRequest();
-        AppointmentCheckupResponse response = new AppointmentCheckupResponse();
+        Appointment appointment = mapToAppointment(getValidRequest());
+        appointment.setAppointmentId(appointmentId);
+
+        AppointmentCheckupRequest updatedRequest = getValidRequest();
+        updatedRequest.setPatientName("Updated Name");
 
         when(appointmentRepository.findByAppointmentId(appointmentId)).thenReturn(Optional.of(appointment));
-        doAnswer(invocation -> {
-            AppointmentCheckupRequest req = invocation.getArgument(0);
-            Appointment appt = invocation.getArgument(1);
-            appt.setPatientName(req.getPatientName());
-            return null;
-        }).when(mapper).updateAppointmentFromRequest(eq(request), eq(appointment));
-        when(appointmentRepository.save(appointment)).thenReturn(appointment);
-        when(mapper.toResponse(appointment)).thenReturn(response);
+        when(appointmentRepository.save(any())).thenAnswer(invocation -> invocation.getArgument(0));
 
-        AppointmentCheckupResponse result = appointmentService.updateAppointment(appointmentId, request);
+        AppointmentCheckupResponse result = appointmentService.updateAppointment(appointmentId, updatedRequest);
 
         assertNotNull(result);
-        assertEquals("Confirmed", appointment.getStatus());
+        assertEquals("Confirmed", result.getStatus());
+        assertEquals("Updated Name", result.getPatientName());
     }
 }

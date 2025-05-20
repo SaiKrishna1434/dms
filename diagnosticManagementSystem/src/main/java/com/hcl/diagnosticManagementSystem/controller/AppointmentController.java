@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/appointment")
 public class AppointmentController {
@@ -42,7 +44,7 @@ public class AppointmentController {
     public ResponseEntity<CustomResponseModel<AppointmentCheckupResponse>> deleteAppointment(@PathVariable String appointmentId) {
         try {
             AppointmentCheckupResponse response = appointmentService.deleteAppointmentById(appointmentId);
-            return ResponseEntity.ok(new CustomResponseModel<>(true, "Appointment deleted successfully", response));
+            return ResponseEntity.ok(new CustomResponseModel<>(true, "Appointment cancelled successfully", response));
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(new CustomResponseModel<>(false, e.getMessage(), null));
@@ -60,6 +62,28 @@ public class AppointmentController {
                     .body(new CustomResponseModel<>(false, "Error: " + e.getMessage(), null));
         }
     }
+
+    @GetMapping("")
+    public ResponseEntity<CustomResponseModel<List<AppointmentCheckupResponse>>> getAllAppointments() {
+        try {
+            List<AppointmentCheckupResponse> responses = appointmentService.getAllAppointments();
+
+            return ResponseEntity.ok(new CustomResponseModel<>(
+                    true,
+                    "Appointments fetched successfully",
+                    responses
+            ));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CustomResponseModel<>(
+                            false,
+                            "Error: " + e.getMessage(),
+                            null
+                    ));
+        }
+    }
+
+
 
     @PutMapping("/{appointmentId}")
     public ResponseEntity<CustomResponseModel<AppointmentCheckupResponse>> updateAppointment(

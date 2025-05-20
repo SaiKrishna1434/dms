@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
 
@@ -25,6 +26,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public AppointmentCheckupResponse applyForCheckup(AppointmentCheckupRequest request) {
+        logger.info("Applying for checkup for patient: {}", request.getPatientName());
+
         Appointment appointment = new Appointment();
         appointment.setAppointmentId(UUID.randomUUID().toString());
         appointment.setPatientName(request.getPatientName());
@@ -56,8 +59,8 @@ public class AppointmentServiceImpl implements AppointmentService {
         logger.info("Deleting appointment with ID: {}", appointmentId);
         Appointment appointment = getAppointmentById(appointmentId);
         appointment.setStatus("Cancelled");
-        logger.info("Appointment cancelled and deleted: {}", appointmentId);
         appointmentRepository.delete(appointment);
+        logger.info("Appointment cancelled and deleted: {}", appointmentId);
         return toResponse(appointment);
     }
 
@@ -82,10 +85,11 @@ public class AppointmentServiceImpl implements AppointmentService {
         appointment.setAppointmentDate(request.getPreferredDate());
         appointment.setAppointmentTime(request.getPreferredTime());
 
+
         if (request.getPreferredDate().isAfter(LocalDate.now().plusDays(15))) {
             appointment.setStatus("Pending");
             appointment.setRemark("Choose date within 15 days");
-            logger.info("Updating appointment with ID: {}", appointmentId);
+            logger.warn("Updated date is beyond 15 days for appointment: {}", appointmentId);
         } else {
             appointment.setStatus("Confirmed");
             appointment.setRemark(null);

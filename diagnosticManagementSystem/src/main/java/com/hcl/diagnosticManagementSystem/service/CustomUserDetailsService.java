@@ -1,8 +1,9 @@
 package com.hcl.diagnosticManagementSystem.service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.hcl.diagnosticManagementSystem.dao.CustomerRepository;
 import com.hcl.diagnosticManagementSystem.entity.Customer;
+import com.hcl.diagnosticManagementSystem.entity.Role;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -26,10 +28,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 		Customer customer = customerRepository.findByUserId(userId)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found with user ID: " + userId));
 		
-		List<String> roles = customer.getRoles().stream()
-					.map(role -> role.getName().name())
-					.toList();
-		return new User(customer.getUserId(), customer.getPassword(), new ArrayList<>());
+		Role customerRole = customer.getRole();
+		if(customerRole == null || customerRole.getName() == null) {
+			throw new UsernameNotFoundException("User " + userId + " has no assigned role.");
+		}
+		
+		List<SimpleGrantedAuthority> authorities =  Collections.singletonList(
+				new SimpleGrantedAuthority(customerRole.getName().name())
+		);
+		return new User(customer.getUserId(), customer.getPassword(), authorities);
 	}
 	
 }

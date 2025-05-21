@@ -34,16 +34,12 @@ public class HealthCheckupService {
 	
 	@Autowired
 	private CustomerHealthCheckupApplicationRepository customerHealthCheckupApplicationRepository;
-
+	
 	@Autowired
 	private CustomerService customerService;
 	
-	@Autowired
-    private MedicareServiceRepository medicareServiceRepository;
 	
-	
-	public List<HealthCheckup> searchHealthCheckupPlans (String query) {
-		// This method was returning HealthCheckup entities.
+	public List<HealthCheckup> searchHealthCheckupPlans (String query) {		// This method was returning HealthCheckup entities.
 		return healthCheckupRepository.findByNameContaining(query);
 	}
 	
@@ -59,7 +55,7 @@ public class HealthCheckupService {
 		HealthCheckup healthCheckup = 	healthCheckupRepository.findById(healthCheckupId)
 				.orElseThrow(() -> new HealthCheckupNotFoundException("Health Checkup not found with ID: " + healthCheckupId));
 			
-			// Check if already exist or already applied for health checkup
+			// Check if already exist or already applied for 'health checkup'
 			boolean alreadyApplied = customerHealthCheckupApplicationRepository.existsByCustomerAndHealthCheckup(customer, healthCheckup);
 		 	if (alreadyApplied) {
 			     throw new ApplicationAlreadyExistsException("Customer " + userId + " has already applied for Health Checkup " + healthCheckupId);
@@ -70,7 +66,6 @@ public class HealthCheckupService {
 			application.setHealthCheckup((healthCheckup));
 			application.setApplicationDate(LocalDate.now());
 			application.setStatus("Pending");
-			
 			CustomerHealthCheckupApplication savedApplication =  customerHealthCheckupApplicationRepository.save(application);
 			return new HealthCheckupApplicationResponseDTO(savedApplication);
 	}
@@ -80,7 +75,6 @@ public class HealthCheckupService {
 		Customer customer = customerService.getCustomerByUserId(userId)
 				.orElseThrow(() -> new CustomerNotFoundException("Customer not found for userId: " + userId));
 		List<CustomerHealthCheckupApplication> applications = customerHealthCheckupApplicationRepository.findByCustomer(customer);
-		
 		return applications.stream()
 				.map(HealthCheckupApplicationResponseDTO::new)
 				.collect(Collectors.toList());
@@ -91,17 +85,10 @@ public class HealthCheckupService {
         HealthCheckup healthCheckup = new HealthCheckup();
         healthCheckup.setName(requestDTO.getName());
         healthCheckup.setDescription(requestDTO.getDescription());
-        healthCheckup.setPrice(requestDTO.getPrice());
+        healthCheckup.setEligibility(requestDTO.getEligibility());
+        healthCheckup.setFrequency(requestDTO.getFrequency());
+        healthCheckup.setCost(requestDTO.getCost());
          
-        // Handling MedicareServices association (as per previous corrections)
-        if (requestDTO.getMedicareServiceIds() != null && !requestDTO.getMedicareServiceIds().isEmpty()) {
-            List<MedicareService> medicareServices = requestDTO.getMedicareServiceIds().stream()
-                .map(id -> medicareServiceRepository.findById(id)
-                    .orElseThrow(() -> new MedicareServiceNotFoundException("Medicare Service not found with ID: " + id)))
-                .collect(Collectors.toList());
-            healthCheckup.setMedicareService(medicareServices);
-        }
-
         return healthCheckupRepository.save(healthCheckup);
     }
 }

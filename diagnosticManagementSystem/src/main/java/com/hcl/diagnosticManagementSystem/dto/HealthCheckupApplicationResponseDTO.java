@@ -24,24 +24,28 @@ public class HealthCheckupApplicationResponseDTO {
      }
 
      if (application.getHealthCheckup() != null) {
-         this.healthCheckup = new HealthCheckupInfoDTO(application.getHealthCheckup().getId(),
-                                                        application.getHealthCheckup().getName(),
-                                                        application.getHealthCheckup().getDescription(),
-                                                        application.getHealthCheckup().getPrice());
+         this.healthCheckup = new HealthCheckupInfoDTO (
+        		application.getHealthCheckup().getId(),
+                application.getHealthCheckup().getName(),
+                application.getHealthCheckup().getDescription(),
+                application.getHealthCheckup().getCost()
+         );
      }
  }
 
- // Getters
- public Long getId() { return id; }
- public LocalDate getApplicationDate() { return applicationDate; }
- public String getStatus() { return status; }
- public CustomerApplicationInfoDTO getCustomer() { return customer; }
- public HealthCheckupInfoDTO getHealthCheckup() { return healthCheckup; }
 
- // Setters (if needed for deserialization, though typically not for response DTOs)
+ public Long getId() { return id; }
  public void setId(Long id) { this.id = id; }
- public void setApplicationDate(LocalDate applicationDate) { this.applicationDate = applicationDate; }
+ 
+ public String getStatus() { return status; }
  public void setStatus(String status) { this.status = status; }
+ 
+ public CustomerApplicationInfoDTO getCustomer() { return customer; }
  public void setCustomer(CustomerApplicationInfoDTO customer) { this.customer = customer; }
+
+ public LocalDate getApplicationDate() { return applicationDate; }
+ public void setApplicationDate(LocalDate applicationDate) { this.applicationDate = applicationDate; }
+ 
+ public HealthCheckupInfoDTO getHealthCheckup() { return healthCheckup; }
  public void setHealthCheckup(HealthCheckupInfoDTO healthCheckup) { this.healthCheckup = healthCheckup; }
 }

@@ -12,8 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -48,14 +47,10 @@ public class Customer {
     private String emailId;
 	
 	
-	// A Customer can have multiple roles - Agent, Doctor, Customer, Manager, Admin
-	@ManyToMany
-	@JoinTable(
-			name = "customer_roles",
-			joinColumns = @JoinColumn(name = "customer_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id")
-	)
-	private List<Role> roles;
+	// Many Customers can have a role - Agent, Customer, Doctor, Manager, Admin
+	@ManyToOne
+	@JoinColumn(name = "role_id", referencedColumnName = "id")
+	private Role role;
 	
 	
 	@OneToMany (mappedBy = "customer")
@@ -71,16 +66,22 @@ public class Customer {
 	
 	public Long getId() { return id; }
 	public void setId(Long id) { this.id = id; }
+	
 	public String getUserId() { return userId; }
 	public void setUserId(String userId) { this.userId = userId; }
+	
 	public String getPassword() { return password; }
 	public void setPassword(String password) { this.password = password; }
+	
 	public LocalDate getDateOfBirth() { return dateOfBirth; }
 	public void setDateOfBirth(LocalDate dateOfBirth) { this.dateOfBirth = dateOfBirth; }
+	
 	public String getEmailId() { return emailId; }
 	public void setEmailId(String emailId) { this.emailId = emailId; }
-	public List<Role> getRoles() { return roles; }
-	public void setRoles(List<Role> roles) { this.roles = roles; }
+	
+	public Role getRole() { return role; }
+	public void setRole(Role role) { this.role = role; }
+	
 	public List<CustomerHealthCheckupApplication> geCustomertHealthCheckupApplications() { return customerHealthCheckupApplications; }
 	public void setHealthCheckups(List<CustomerHealthCheckupApplication> customerHealthCheckupApplications) { this.customerHealthCheckupApplications = customerHealthCheckupApplications; }
 }

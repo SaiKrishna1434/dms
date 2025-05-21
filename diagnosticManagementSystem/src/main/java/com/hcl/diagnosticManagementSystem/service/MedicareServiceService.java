@@ -18,7 +18,7 @@ public class MedicareServiceService {
 	private MedicareServiceRepository medicareServiceRepository;
 	
 	public List<MedicareService> searchMedicareServices(String query) {
-		return medicareServiceRepository.findByNameOrCategory(query);
+		return medicareServiceRepository.findByNameOrEligibility(query);
 	}
 	
 	public List<MedicareService> getAllMedicareServices() {

@@ -1,4 +1,4 @@
-package com.hcl.diagnosticManagementSystem.exception;
+package com.hcl.diagnosticManagementSystem.repository;
 
 public class CustomerNotFoundException extends Exception{
 

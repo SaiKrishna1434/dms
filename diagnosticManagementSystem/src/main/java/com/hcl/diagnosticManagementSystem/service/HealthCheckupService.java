@@ -8,20 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.hcl.diagnosticManagementSystem.dao.CustomerHealthCheckupApplicationRepository;
-import com.hcl.diagnosticManagementSystem.dao.HealthCheckupRepository;
-import com.hcl.diagnosticManagementSystem.dao.MedicareServiceRepository;
 import com.hcl.diagnosticManagementSystem.dto.HealthCheckupApplicationResponseDTO;
 import com.hcl.diagnosticManagementSystem.dto.HealthCheckupCreationRequestDTO;
 import com.hcl.diagnosticManagementSystem.entity.Customer;
 import com.hcl.diagnosticManagementSystem.entity.CustomerHealthCheckupApplication;
 import com.hcl.diagnosticManagementSystem.entity.HealthCheckup;
-import com.hcl.diagnosticManagementSystem.entity.MedicareService;
-
 import com.hcl.diagnosticManagementSystem.exception.ApplicationAlreadyExistsException;
 import com.hcl.diagnosticManagementSystem.exception.CustomerNotFoundException;
 import com.hcl.diagnosticManagementSystem.exception.HealthCheckupNotFoundException;
-import com.hcl.diagnosticManagementSystem.exception.MedicareServiceNotFoundException;
+import com.hcl.diagnosticManagementSystem.repository.CustomerHealthCheckupApplicationRepository;
+import com.hcl.diagnosticManagementSystem.repository.HealthCheckupRepository;
 
 import jakarta.validation.Valid;
 

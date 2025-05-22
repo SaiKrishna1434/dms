@@ -1,4 +1,4 @@
-package healthcheckup.repository;
+package com.hcl.diagnosticManagementSystem.repository;
 
 import java.util.List;
 

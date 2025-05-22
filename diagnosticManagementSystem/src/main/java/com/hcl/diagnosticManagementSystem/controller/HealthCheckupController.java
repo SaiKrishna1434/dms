@@ -1,4 +1,4 @@
-package healthcheckup.controller;
+package com.hcl.diagnosticManagementSystem.controller;
 
 import java.util.List;
 

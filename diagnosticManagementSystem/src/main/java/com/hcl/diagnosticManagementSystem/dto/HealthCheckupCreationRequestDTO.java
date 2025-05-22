@@ -1,4 +1,4 @@
-package healthcheckup.dto;
+package com.hcl.diagnosticManagementSystem.dto;
 
 import java.util.List;
 

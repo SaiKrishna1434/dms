@@ -1,6 +1,4 @@
-package healthcheckup.entity;
-
-import java.util.List;
+package com.hcl.diagnosticManagementSystem.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -49,7 +47,7 @@ public class HealthCheckup {
 
 	public HealthCheckup() {}
 	public HealthCheckup(Long id, String name, String description, String eligibility, String frequency, double cost,
-			List<MedicareService> medicareService, CustomerHealthCheckupApplication customerHealthCheckupApplication) {
+		CustomerHealthCheckupApplication customerHealthCheckupApplication) {
 		this.id = id;
 		this.name = name;
 		this.description = description;

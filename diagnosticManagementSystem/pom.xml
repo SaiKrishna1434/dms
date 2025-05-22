@@ -115,7 +115,7 @@
 
 			
 		<dependency>
-<<<<<<< HEAD
+
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.5.Final</version>
@@ -125,11 +125,11 @@
 			<artifactId>mapstruct-processor</artifactId>
 			<version>1.5.5.Final</version>
 			<!--<scope>provided</scope>-->
-=======
+		</dependency>
+		<dependency>
 			<groupId>jakarta.servlet</groupId>
 			<artifactId>jakarta.servlet-api</artifactId>
 			<scope>provided</scope>
->>>>>>> b45879376fe76f0c370644ecb46326b8a990f8b9
 		</dependency>
 	
 	<dependency>

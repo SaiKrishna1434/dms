@@ -1,4 +1,4 @@
-package healthcheckup.dto;
+package com.hcl.diagnosticManagementSystem.dto;
 
 
 //This DTO contains ONLY the customer info needed for the application response

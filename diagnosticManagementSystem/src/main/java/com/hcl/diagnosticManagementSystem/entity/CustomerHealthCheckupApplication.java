@@ -1,4 +1,4 @@
-package healthcheckup.entity;
+package com.hcl.diagnosticManagementSystem.entity;
 
 import java.time.LocalDate;
 

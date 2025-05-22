@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hcl.diagnosticManagementSystem.controller.InsuranceAgentController;
 import com.hcl.diagnosticManagementSystem.dto.CustomerResponse;
 import com.hcl.diagnosticManagementSystem.dto.DeselectRequest;
 import com.hcl.diagnosticManagementSystem.dto.IDRequest;
@@ -34,6 +37,8 @@ import com.hcl.diagnosticManagementSystem.repository.ServicesRepository;
 @Service
 public class InsuranceAgentService {
 
+	private static final Logger log=LoggerFactory.getLogger(InsuranceAgentService.class);
+	
 	@Autowired
 	private InsuranceAgentRepository insuranceAgentRepository;
 	@Autowired
@@ -61,6 +66,8 @@ public class InsuranceAgentService {
 	}
 	
 	public List<NameResponse> getAgentByName(String name) throws InsuranceAgentException, RequestBodyException {
+		
+		log.info("Get Agent Details by name method is been invocked");
 		
 		if(name.trim().isEmpty())
 		{
@@ -92,6 +99,8 @@ public class InsuranceAgentService {
 	
 	public CustomerResponse deleteAllServices(String userId) throws CustomerNotFoundException, CustomerServiceNotFoundException,Exception {
 	
+		log.info("Delete all services method is been invocked");
+		
 		if(userId.trim().isEmpty())
 		{
 			throw new RequestBodyException("userId cannot be blank");
@@ -151,6 +160,8 @@ public class InsuranceAgentService {
 	}
 	
 	public CustomerResponse deleteSelectedService(DeselectRequest request) throws CustomerServiceNotFoundException, NumberFormatException, CustomerNotFoundException, Exception{
+		
+		log.info("Delete selected services method is been invocked");
 		
 		if(request.getUserId().trim().isEmpty())
 		{
@@ -224,6 +235,8 @@ public class InsuranceAgentService {
 	
 	public CustomerResponse getCustomerAllDetails(IDRequest request) throws RequestBodyException, CustomerNotFoundException,Exception {
 		
+		log.info("Get customer details method is been invocked");
+		
 		if(request.getUserId().trim().isEmpty())
 		{
 			throw new RequestBodyException("UserId should not be blank");
@@ -270,6 +283,8 @@ public class InsuranceAgentService {
 
 	public List<InsuranceAgentResponse> getAgentsUsingLocation(LocationRequest locationRequest) throws LocationNotFoundException,Exception {
 		
+		log.info("Get Agent Details by location method is been invocked");
+		
 		if(locationRequest.getLocation().trim().isEmpty())
 		{
 			throw new RequestBodyException("Location cannot be blank");
@@ -305,6 +320,8 @@ public class InsuranceAgentService {
 	}
 
 	public CustomerResponse selectService(SelectServiceRequest request) throws NumberFormatException, CustomerNotFoundException, InsuranceAgentException,Exception {
+		
+		log.info("Select service method is been invocked");
 		
 		if(request.getUserId().trim().isEmpty())
 		{

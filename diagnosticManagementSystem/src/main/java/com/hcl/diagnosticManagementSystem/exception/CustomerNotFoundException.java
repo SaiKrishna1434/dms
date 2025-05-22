@@ -1,6 +1,6 @@
 package com.hcl.diagnosticManagementSystem.exception;
 
-public class CustomerNotFoundException extends Exception{
+public class CustomerNotFoundException extends RuntimeException {
 
 	public CustomerNotFoundException(String message) {
 		super(message);

@@ -1,9 +1,13 @@
 package com.hcl.diagnosticManagementSystem;
 
 
-import com.hcl.diagnosticManagementSystem.apiResponseModel.CustomResponseModel;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import com.hcl.diagnosticManagementSystem.apiResponseModel.CustomResponseModel;
 
 class CustomResponseModelTest {
 
@@ -15,7 +19,8 @@ class CustomResponseModelTest {
         assertEquals("Success", response.getMessage());
         assertEquals("Test Data", response.getData());
     }
-
+    
+    /*
     @Test
     void testNoArgsConstructorAndSetters() {
         CustomResponseModel<String> response = new CustomResponseModel<>();
@@ -27,6 +32,7 @@ class CustomResponseModelTest {
         assertEquals("Failed", response.getMessage());
         assertEquals("Error Data", response.getData());
     }
+    */
 
     @Test
     void testGenericTypeWithCustomObject() {

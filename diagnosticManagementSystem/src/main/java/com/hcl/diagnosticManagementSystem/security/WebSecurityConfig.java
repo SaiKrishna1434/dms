@@ -65,13 +65,13 @@ public class WebSecurityConfig {
                         
                         
                         //  HealthCheckup Endpoints Security Configuration
-                        .requestMatchers(HttpMethod.GET, "/api/healthcheckup/search").permitAll() // Allow searching for plans
+                        .requestMatchers(HttpMethod.GET, "/api/healthcheckup/search-healthcheckup").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/healthcheckup/{id}").permitAll()   // Allow retrieving a single plan by ID
+                        .requestMatchers(HttpMethod.GET, "/api/healthcheckup/{userId}").permitAll() 
 //                        .requestMatchers(HttpMethod.POST, "/api/healthcheckup/apply/{userId}/{healthCheckupId}").authenticated() // Secure apply
-                        .requestMatchers(HttpMethod.POST, "/api/healthcheckup/apply/{userId}/{healthCheckupId}").permitAll() 
+                        .requestMatchers(HttpMethod.POST, "/api/healthcheckup/apply-healthcheckup/{userId}/{healthCheckupId}").permitAll() 
 //                        .requestMatchers(HttpMethod.GET, "/api/healthcheckup/applications/{userId}").authenticated() // Secure get applications
-                        .requestMatchers(HttpMethod.GET, "/api/healthcheckup/applications/{userId}").permitAll() 
-                        .requestMatchers(HttpMethod.POST, "/api/healthcheckup/create").permitAll() 
+                        .requestMatchers(HttpMethod.POST, "/api/healthcheckup/create-new-healthcheckup").permitAll() 
                     
                         
                         

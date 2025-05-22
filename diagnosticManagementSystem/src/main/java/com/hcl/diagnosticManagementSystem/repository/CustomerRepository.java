@@ -11,5 +11,7 @@ import com.hcl.diagnosticManagementSystem.entity.Customer;
 public interface CustomerRepository extends JpaRepository<Customer, String> {
 
 	Optional<Customer> findById(String id);
+	Optional<Customer> findByUserId(String userId);
+	Optional<Customer> findByEmailId(String emailId);
 
 }

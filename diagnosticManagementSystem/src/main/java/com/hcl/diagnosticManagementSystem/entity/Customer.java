@@ -1,17 +1,14 @@
 package com.hcl.diagnosticManagementSystem.entity;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import jakarta.persistence.CollectionTable;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -36,7 +33,7 @@ public class Customer {
 	@Past(message = "Date of birth must be in past")
 	@NotNull(message = "Date should not be null")
 	@Temporal(TemporalType.DATE)
-	private Date dob;
+	private LocalDate dob;
 	
 	@Email(message= "Invalid email format")
 	@NotBlank(message= "Email Id can not be blank")
@@ -47,6 +44,7 @@ public class Customer {
 	@OneToMany(mappedBy="customer")
 	private List<CustomerServiceRecord> customerRecords=new ArrayList<>();
 	
+	/*
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(
 			name="Roles_User",
@@ -54,12 +52,18 @@ public class Customer {
 			)
 	@Column(name="role")
 	private Set<String> roles;
+	*/
+	
+	// Many Customers can have a role - Customer, Agen, Doctor, Admin, Manager
+	@ManyToOne
+	@JoinColumn(name = "role-id", referencedColumnName = "id")
+	private Role role;
 	
 	public Customer() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Customer(String userId, String name,String password, Date dob, String emailId) {
+	public Customer(String userId, String name,String password, LocalDate dob, String emailId) {
 		this.userId = userId;
 		this.password = password;
 		this.customerName=name;
@@ -83,11 +87,11 @@ public class Customer {
 		this.password = password;
 	}
 
-	public Date getDob() {
+	public LocalDate getDob() {
 		return dob;
 	}
 
-	public void setDob(Date dob) {
+	public void setDob(LocalDate dob) {
 		this.dob = dob;
 	}
 
@@ -123,12 +127,12 @@ public class Customer {
 		this.location = location;
 	}
 
-	public Set<String> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(Set<String> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	
 }

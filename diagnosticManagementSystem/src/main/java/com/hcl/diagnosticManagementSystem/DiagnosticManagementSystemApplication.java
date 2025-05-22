@@ -12,9 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.diagnosticmedicalmanagementsystem")
-@EntityScan(basePackages = "com.hcl.diagnosticManagementSystem.model")
-@EnableJpaRepositories(basePackages = "com.hcl.diagnosticManagementSystem.dao")
 public class DiagnosticManagementSystemApplication {
 	
 	private static final Logger log=LoggerFactory.getLogger(DiagnosticManagementSystemApplication.class);

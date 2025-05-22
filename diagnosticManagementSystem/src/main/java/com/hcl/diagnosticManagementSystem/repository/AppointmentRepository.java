@@ -10,6 +10,4 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     Optional<Appointment> findByAppointmentId(String appointmentId);
 
 
-    void deleteByAppointmentId(String appointmentId);
-    boolean existsByAppointmentId(String appointmentId);
 }

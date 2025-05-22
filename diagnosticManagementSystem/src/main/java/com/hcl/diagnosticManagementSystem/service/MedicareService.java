@@ -41,7 +41,7 @@ public class MedicareService {
 			return medrepo.save(existingRecords);
 		}
 		else {
-			throw new ValueNotFoundException("Service not found id"+id);
+			throw new ValueNotFoundException("Service not found for id"+id);
 		}	
 	}
 	

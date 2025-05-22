@@ -2,11 +2,12 @@ package com.hcl.diagnosticManagementSystem.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,8 @@ import com.hcl.diagnosticManagementSystem.service.InsuranceAgentService;
 @RestController
 @RequestMapping("/api/insurance")
 public class InsuranceAgentController {
+	
+	private static final Logger log=LoggerFactory.getLogger(InsuranceAgentController.class);
 
 	@Autowired
 	private InsuranceAgentService insuranceAgentService;
@@ -38,6 +41,7 @@ public class InsuranceAgentController {
 	@PostMapping("/byAgentName")
 	public ResponseEntity<CustomerViewResponseModel<List<NameResponse>>> findAgentsByName(@RequestBody NameRequest name)
 	{
+		log.info("Control in byAgentName api");
 		CustomerViewResponseModel<List<NameResponse>> response=new CustomerViewResponseModel<>();
 		try
 		{
@@ -73,6 +77,7 @@ public class InsuranceAgentController {
 	@PostMapping("/getInsuranceAgent")
 	public ResponseEntity<CustomerViewResponseModel<List<InsuranceAgentResponse>>> findAgentsByLocation(@RequestBody LocationRequest locationRequest)
 	{
+		log.info("Control in getInsuranceAget api");
 		CustomerViewResponseModel<List<InsuranceAgentResponse>> response=new CustomerViewResponseModel<>();
 		try
 		{
@@ -109,7 +114,7 @@ public class InsuranceAgentController {
 	@DeleteMapping("/deselectAllService")
 	public ResponseEntity<CustomerViewResponseModel<CustomerResponse>> deleteAllServices(@RequestBody IDRequest request)
 	{
-	
+		log.info("control in delete all services api");
 		CustomerViewResponseModel<CustomerResponse> response=new CustomerViewResponseModel<CustomerResponse>();
 		try
 		{
@@ -153,6 +158,7 @@ public class InsuranceAgentController {
 	@DeleteMapping("/deleteSelectService")
 	public ResponseEntity<CustomerViewResponseModel<CustomerResponse>> onlySelectedServiceDeleted(@RequestBody DeselectRequest request)
 	{
+		log.info("Control in delete selected services api");
 		CustomerViewResponseModel<CustomerResponse> response=new CustomerViewResponseModel<>();
 		try
 		{
@@ -205,6 +211,7 @@ public class InsuranceAgentController {
 	@PostMapping("/selectedService")
 	public ResponseEntity<CustomerViewResponseModel<CustomerResponse>> customerSelectedService(@RequestBody SelectServiceRequest request)
 	{
+		log.info("Control in select service api");
 		CustomerViewResponseModel<CustomerResponse> response=new CustomerViewResponseModel<>();
 		try
 		{
@@ -254,6 +261,7 @@ public class InsuranceAgentController {
 	@PostMapping("/viewCustomer")
 	public ResponseEntity<CustomerViewResponseModel<CustomerResponse>> customerDetails(@RequestBody IDRequest request)
 	{
+		log.info("Control in view customer api");
 		CustomerViewResponseModel<CustomerResponse> response = new CustomerViewResponseModel<CustomerResponse>();
 		
 		try {

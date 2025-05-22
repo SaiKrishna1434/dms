@@ -5,6 +5,7 @@ import com.hcl.diagnosticManagementSystem.controller.AppointmentController;
 import com.hcl.diagnosticManagementSystem.dto.AppointmentCheckupRequest;
 import com.hcl.diagnosticManagementSystem.dto.AppointmentCheckupResponse;
 import com.hcl.diagnosticManagementSystem.service.AppointmentService;
+
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
@@ -44,17 +45,33 @@ class AppointmentControllerTest {
         return request;
     }
 
-//    @Test
-//    void testApply_Success() throws Exception {
-//        AppointmentCheckupResponse response = new AppointmentCheckupResponse();
-//        when(appointmentService.applyForCheckup(any())).thenReturn(response);
-//
-//        mockMvc.perform(post("/appointment")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(getValidRequest())))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.success").value(true));
-//    }
+    @Test
+    void testApply_Success() throws Exception {
+        AppointmentCheckupResponse response = new AppointmentCheckupResponse();
+        response.setAppointmentId("abc123");
+        response.setPatientName("Alice");
+
+        when(appointmentService.applyForCheckup(any())).thenReturn(response);
+
+        String body = "{"
+                + "\"patientName\":\"Alice\","
+                + "\"age\":25,"
+                + "\"gender\":\"Female\","
+                + "\"mobile\":\"9876543210\","
+                + "\"email\":\"alice@example.com\","
+                + "\"checkupType\":\"Blood Test\","
+                + "\"preferredDate\":\"" + LocalDate.now().plusDays(2) + "\","
+                + "\"preferredTime\":\"09:00:00\""
+                + "}";
+
+        mockMvc.perform(post("/appointment")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value("Appointment booked successfully"))
+                .andExpect(jsonPath("$.data.patientName").value("Alice"));
+    }
 
     @Test
     void testDeleteAppointment_Success() throws Exception {
@@ -76,15 +93,32 @@ class AppointmentControllerTest {
                 .andExpect(jsonPath("$.success").value(true));
     }
 
-//    @Test
-//    void testUpdateAppointment_Success() throws Exception {
-//        AppointmentCheckupResponse response = new AppointmentCheckupResponse();
-//        when(appointmentService.updateAppointment(eq("test-id"), any())).thenReturn(response);
-//
-//        mockMvc.perform(put("/appointment/test-id")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(getValidRequest())))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.success").value(true));
-//    }
+    @Test
+    void testUpdateAppointment_Success() throws Exception {
+        AppointmentCheckupResponse response = new AppointmentCheckupResponse();
+        response.setAppointmentId("test-id");
+        response.setPatientName("Alice Updated");
+
+        when(appointmentService.updateAppointment(eq("test-id"), any())).thenReturn(response);
+
+        String body = "{"
+                + "\"patientName\":\"Alice Updated\","
+                + "\"age\":25,"
+                + "\"gender\":\"Female\","
+                + "\"mobile\":\"9876543210\","
+                + "\"email\":\"alice@example.com\","
+                + "\"checkupType\":\"Blood Test\","
+                + "\"preferredDate\":\"" + LocalDate.now().plusDays(2) + "\","
+                + "\"preferredTime\":\"09:00:00\""
+                + "}";
+
+        mockMvc.perform(put("/appointment/test-id")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.message").value("Appointment updated successfully"))
+                .andExpect(jsonPath("$.data.appointmentId").value("test-id"))
+                .andExpect(jsonPath("$.data.patientName").value("Alice Updated"));
+    }
 }

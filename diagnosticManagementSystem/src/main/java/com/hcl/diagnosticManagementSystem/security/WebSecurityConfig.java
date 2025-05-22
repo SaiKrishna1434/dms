@@ -45,7 +45,15 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                 		.requestMatchers("/registration.html").permitAll() // Allow access to the registration HTML
                         .requestMatchers("/css/**", "/js/**", "/images/**").permitAll() // Allow access to static assets
-                        
+                        .requestMatchers(
+								"/api/admin/register",
+								"/api/members/register",
+								"/api/admin/login",
+								"/api/members/login",
+								"/v3/api-docs/**",
+								"/swagger-ui/**",
+								"/swagger-ui.html"
+						).permitAll()
                         .requestMatchers("/api/customers/register").permitAll() // Allow registration API without authentication
                         
                         // Allow all GET requests to /api/medicare-services (including search and individual retrieval) for customers

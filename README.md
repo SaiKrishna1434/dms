@@ -1,6 +1,16 @@
-# Spring Boot Backend Project Presentation
+# Diagnostic Medicare Center Management System
 
-A Spring Boot project without a frontend/UI can still be very effective if you focus on the architecture, functionality, and future potential. Here's a strategy to help you deliver a compelling presentation:
+
+A Diagnostic Medicare Center Management System (DMS), is a system used for maintaining the details of the "Diagnostic Medicare System". It provides several operations booking an apointment, creating an account for the customer who wants to be a member of the Diagnostic center, to search for a Medicare service, to apply for any health checkup, to find a medical insurance agent and services and to view the medical reports online.
+
+The following are the few important modules in the system:
+a.	To create an account for the new customer 
+b.	To search for any Medicare service.
+c.	 Apply for any health checkup 
+d.	To find an medical Insurance agent and services
+e.	To view the medical report online.
+
+
 
 ---
 

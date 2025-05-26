@@ -23,7 +23,7 @@ In many healthcare environments, especially diagnostic centers and clinics, the 
 - Lack of transparency for patients regarding their application status or test results.
 
 
-# 🎯 Motivation Behind Building It
+### 🎯 Motivation Behind Building It
 The goal is to digitize and streamline the diagnostic process by creating a centralized system that:
 
   - Allows users to apply for health checkups online.
@@ -35,46 +35,47 @@ The goal is to digitize and streamline the diagnostic process by creating a cent
 *This system is especially valuable in the post-pandemic world, where contactless and remote healthcare services are increasingly important.
 
 
-## 👥 Target Users / Beneficiaries
+  ### 👥 Target Users / Beneficiaries
 
-# Patients / Customers:
-
-Can apply for health checkups online.
-Track the status of their applications.
-View available health packages and choose accordingly.
-
-# Diagnostic Center Staff / Admins:
-
-Manage user applications and appointments.
-Assign or approve health checkups.
-Monitor system reports and analytics.
-
-# Healthcare Providers / Doctors:
-
-Access patient application history.
-Recommend appropriate checkups based on history.
-System Integrators / Developers:
-
-Can extend the system to integrate with labs, hospitals, or insurance providers.
+  #### Patients / Customers:
+  
+      Can apply for health checkups online.
+      Track the status of their applications.
+      View available health packages and choose accordingly.
+  
+  #### Diagnostic Center Staff / Admins:
+    
+      Manage user applications and appointments.
+      Assign or approve health checkups.
+      Monitor system reports and analytics.
+  
+  #### Healthcare Providers / Doctors:
+    
+      Access patient application history.
+      Recommend appropriate checkups based on history.
+      System Integrators / Developers:
+  
+  Can extend the system to integrate with labs, hospitals, or insurance providers.
 
 ---
 
 ## 🧱 2. System Architecture Overview
-- 🧱 Diagram Explanation
+### - 🧱 Diagram Explanation
   - 🗄️ Database Entities
   - AppUser: Represents users of the system.
   - HealthCheckup: Represents available health checkup packages.
   - CustomerHealthCheckupApplication: Central entity that links users to checkups.
-  - Relationships:
+    
+  #### - Relationships:
      - CustomerHealthCheckupApplication → AppUser: Many-to-One
      -  CustomerHealthCheckupApplication → HealthCheckup: Many-to-One
 
        This mapping results in a structure like: 
 
-      Table: user_health_checkup_application 
-      ----------------------------------------------------- 
-      | id | application_date | status | appUser_id | health_checkup_id | 
-      ----------------------------------------------------- 
+        Table: user_health_checkup_application 
+        ------------------------------------------------------------------- 
+        | id | application_date | status | appUser_id | health_checkup_id | 
+        -------------------------------------------------------------------
        
       
       appUser_id → Foreign key to AppUser table 

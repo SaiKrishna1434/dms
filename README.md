@@ -23,11 +23,10 @@ e.	To view the medical report online.
 
 ## 🧱 2. System Architecture Overview
 - Use diagrams to show:
-  - Microservices (if any)
   - Database interactions
   - External APIs or integrations
   - Future frontend integration points
-- Tools: Draw.io, Lucidchart, or simple PowerPoint diagrams.
+- Tools: Draw.io, or simple PowerPoint diagrams.
 
 ---
 
@@ -37,17 +36,17 @@ e.	To view the medical report online.
   - Authentication/Authorization
   - Business logic
   - Data persistence
-- Use Postman, Swagger UI, or cURL to demonstrate API endpoints.
+- We used Swagger UI, or Postman to demonstrate API endpoints.
 
 ---
 
 ## 🧰 4. Tech Stack & Tools
-- **Spring Boot** (version)
-- **Database**: MySQL, PostgreSQL, or MongoDB
+- **Spring Boot** (3.5.0)
+- **Database**: MySQL, PostgreSQL
 - **JPA/Hibernate**
 - **Security**: Spring Security, JWT
 - **Testing**: JUnit, Mockito
-- **Build Tools**: Maven or Gradle
+- **Build Tools**: Maven
 
 ---
 
@@ -62,9 +61,9 @@ e.	To view the medical report online.
 ---
 
 ## 📈 6. Testing & Validation
-- Demonstrate unit and integration tests.
-- Show test coverage reports if available.
-- Mention how you ensured reliability and correctness.
+- Unit and integration tests demonstration.
+- Sonarqube reports, Code coverage.
+- We tried to achieve coverage percentage of each of the test classes with valid test method, and ensured to be reliabile and correctness.
 
 ---
 
@@ -77,23 +76,21 @@ e.	To view the medical report online.
 ---
 
 ## 📋 8. Demo (Live or Recorded)
-- Use Postman or Swagger to:
+- Using Postman or Swagger to:
   - Show API requests and responses.
   - Simulate real-world use cases.
-- Optionally, record a short video walkthrough.
 
 ---
 
 ## 📄 9. Documentation
-- Provide a README with:
+- A README with:
   - Setup instructions
   - API documentation
-  - Contribution guidelines (if open source)
 
 ---
 
 ## 🎯 10. Q&A and Feedback
-- Be ready to answer questions about:
+- Ready to answer questions about:
   - Design decisions
   - Trade-offs
   - Future enhancements
